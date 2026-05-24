@@ -15,8 +15,6 @@
         system: nixpkgs.legacyPackages.${system}.nixfmt-tree
       );
 
-      # Hosts are auto-discovered from vars.hosts. To add one: define the
-      # entry in vars.nix and drop in hosts/<name>/{configuration,hardware-configuration}.nix.
       nixosConfigurations = nixpkgs.lib.mapAttrs (
         name: host:
         nixpkgs.lib.nixosSystem {

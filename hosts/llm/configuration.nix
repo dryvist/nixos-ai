@@ -55,8 +55,6 @@
         KbdInteractiveAuthentication = false;
       };
     };
-    # ignoreIP covers trusted internal ranges; key-only SSH auth is the
-    # real access control.
     fail2ban = {
       enable = true;
       maxretry = vars.security.fail2banMaxRetry;
@@ -64,9 +62,7 @@
     };
   };
 
-  users.users.root.openssh.authorizedKeys.keys = map (
-    handle: vars.ssh.keys.${handle}
-  ) host.rootSshKeyHandles;
+  users.users.root.openssh.authorizedKeys.keys = lib.attrVals host.rootSshKeyHandles vars.ssh.keys;
 
   environment.systemPackages = with pkgs; [
     git
