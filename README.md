@@ -34,11 +34,25 @@ sudo git clone https://github.com/JacobPEvans/nixos-ai.git /etc/nixos
 cd /etc/nixos
 ```
 
-If you're forking, edit `vars.nix` and replace the `ssh.*` entries with
-your own OpenSSH public keys before building. The keys live in `vars.nix`
-because the flake evaluator only sees git-tracked files; a gitignored
-sidecar file would evaluate to an empty `authorized_keys` and silently
-brick SSH on the deployed host.
+Edit `vars.nix` at the repo root for your fork. Everything that varies
+per install lives there — SSH keys, disk UUIDs, hostname, timezone,
+CPU/GPU module names, initrd modules, trusted IP ranges, gc schedule,
+zram percentage, fail2ban retry count, supported formatter systems. The
+rest of the tree only references values from `vars.nix`; there are no
+hardcoded UUIDs, hostnames, or per-host magic numbers in the Nix
+modules.
+
+To bring up a new host:
+
+1. Add an entry under `vars.hosts.<name>` (copy the `llm` block as a
+   starting template).
+2. Drop in `hosts/<name>/configuration.nix` and
+   `hosts/<name>/hardware-configuration.nix` (copy the `llm` files;
+   they only reference `host.*` and `vars.*`, no per-host hardcoding).
+3. `sudo nixos-rebuild switch --flake .#<name>` on the target host.
+
+The flake auto-discovers hosts via `nixpkgs.lib.mapAttrs` over
+`vars.hosts`, so no `flake.nix` edit is needed when adding a host.
 
 ## Usage
 
@@ -75,9 +89,13 @@ swapon --show # zram0 priority 5
   (`llm`, future `inference-N`).
 - Timezone is UTC on every host.
 - Root SSH is key-only; password and keyboard-interactive auth are disabled.
-- Operator-provided values (SSH keys, future site-specific bits) live in
-  `vars.nix` at the repo root and are referenced by host configurations.
-  This file is committed; only put values that are publishable here.
+- All per-install and per-operator values (SSH keys, disk UUIDs,
+  hostname, timezone, CPU/GPU module names, initrd modules, trusted IP
+  ranges, gc schedule, zram %, fail2ban retry count) live in `vars.nix`
+  at the repo root and flow into modules via `specialArgs` as `host` and
+  `vars`. The Nix modules contain no per-host magic numbers — only
+  policy decisions like "use systemd-boot" or "NetworkManager owns DHCP".
+  `vars.nix` is committed; only publishable values belong there.
 - `fail2ban` guards sshd; the RFC1918 `10.0.0.0/8` range is in `ignoreIP`
   to cover the multi-VLAN homelab boundary. Key-only auth is the actual
   access control.

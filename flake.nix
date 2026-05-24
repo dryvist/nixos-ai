@@ -7,17 +7,23 @@
 
   outputs =
     { self, nixpkgs }:
+    let
+      vars = import ./vars.nix;
+    in
     {
-      formatter = nixpkgs.lib.genAttrs [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ] (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
+      formatter = nixpkgs.lib.genAttrs vars.flake.formatterSystems (
+        system: nixpkgs.legacyPackages.${system}.nixfmt-tree
+      );
 
-      nixosConfigurations = {
-        llm = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./hosts/llm/configuration.nix ];
-        };
-      };
+      # Hosts are auto-discovered from vars.hosts. To add one: define the
+      # entry in vars.nix and drop in hosts/<name>/{configuration,hardware-configuration}.nix.
+      nixosConfigurations = nixpkgs.lib.mapAttrs (
+        name: host:
+        nixpkgs.lib.nixosSystem {
+          inherit (host) system;
+          specialArgs = { inherit host vars; };
+          modules = [ ./hosts/${name}/configuration.nix ];
+        }
+      ) vars.hosts;
     };
 }

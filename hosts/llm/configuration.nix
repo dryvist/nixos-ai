@@ -2,48 +2,46 @@
   config,
   lib,
   pkgs,
+  host,
+  vars,
   ...
 }:
 
-let
-  vars = import ../../vars.nix;
-in
 {
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-    initrd.kernelModules = [ "amdgpu" ];
-    kernelModules = [ "kvm-amd" ];
+    initrd.kernelModules = [ host.gpu.initrdModule ];
+    kernelModules = [ host.cpu.kvmModule ];
   };
 
   networking = {
-    hostName = "llm";
+    inherit (host) hostName;
     networkmanager.enable = true;
     firewall.enable = true;
   };
 
-  time.timeZone = "UTC";
+  time = {
+    inherit (host) timeZone;
+  };
 
   nix = {
     settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
+      experimental-features = vars.nix.experimentalFeatures;
       auto-optimise-store = true;
     };
     gc = {
       automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
+      dates = vars.nix.gcDates;
+      options = vars.nix.gcOptions;
     };
   };
 
   zramSwap = {
     enable = true;
-    memoryPercent = 25;
+    memoryPercent = vars.resources.zramMemoryPercent;
   };
 
   hardware.graphics.enable = true;
@@ -57,22 +55,18 @@ in
         KbdInteractiveAuthentication = false;
       };
     };
-    # ignoreIP covers the multi-VLAN internal homelab boundary; real
-    # access control is key-only auth.
+    # ignoreIP covers trusted internal ranges; key-only SSH auth is the
+    # real access control.
     fail2ban = {
       enable = true;
-      maxretry = 5;
-      ignoreIP = [
-        "10.0.0.0/8"
-        "127.0.0.0/8"
-      ];
+      maxretry = vars.security.fail2banMaxRetry;
+      ignoreIP = host.network.trustedIpRanges;
     };
   };
 
-  users.users.root.openssh.authorizedKeys.keys = [
-    vars.ssh.mbp-m4-max
-    vars.ssh.secondary
-  ];
+  users.users.root.openssh.authorizedKeys.keys = map (
+    handle: vars.ssh.keys.${handle}
+  ) host.rootSshKeyHandles;
 
   environment.systemPackages = with pkgs; [
     git
@@ -95,5 +89,7 @@ in
     tree
   ];
 
-  system.stateVersion = "26.05";
+  system = {
+    inherit (host) stateVersion;
+  };
 }
