@@ -34,12 +34,11 @@ sudo git clone https://github.com/JacobPEvans/nixos-ai.git /etc/nixos
 cd /etc/nixos
 ```
 
-Per-host `sshkey` files are gitignored. Bootstrap yours from the template:
-
-```bash
-sudo cp hosts/llm/sshkey.example hosts/llm/sshkey
-sudo $EDITOR hosts/llm/sshkey   # paste your authorized public keys
-```
+If you're forking, edit `vars.nix` and replace the `ssh.*` entries with
+your own OpenSSH public keys before building. The keys live in `vars.nix`
+because the flake evaluator only sees git-tracked files; a gitignored
+sidecar file would evaluate to an empty `authorized_keys` and silently
+brick SSH on the deployed host.
 
 ## Usage
 
@@ -76,8 +75,9 @@ swapon --show # zram0 priority 5
   (`llm`, future `inference-N`).
 - Timezone is UTC on every host.
 - Root SSH is key-only; password and keyboard-interactive auth are disabled.
-- Per-host `sshkey` files are gitignored — copy `*.example` to a real file
-  and paste your keys locally.
+- Operator-provided values (SSH keys, future site-specific bits) live in
+  `vars.nix` at the repo root and are referenced by host configurations.
+  This file is committed; only put values that are publishable here.
 - `fail2ban` guards sshd; the RFC1918 `10.0.0.0/8` range is in `ignoreIP`
   to cover the multi-VLAN homelab boundary. Key-only auth is the actual
   access control.

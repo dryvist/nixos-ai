@@ -19,7 +19,8 @@ counterpart to [`nix-ai`](https://github.com/JacobPEvans/nix-ai), which is
 
 - Home-manager / user-level config → [`nix-ai`](https://github.com/JacobPEvans/nix-ai)
 - macOS configs → [`nix-darwin`](https://github.com/JacobPEvans/nix-darwin)
-- Per-host secrets — `hosts/*/sshkey` and any real tokens are gitignored
+- True secrets (private keys, API tokens, TLS certs) — those belong in
+  agenix / sops-nix, never in `vars.nix` or any plain committed file
 
 ### Validation before push
 

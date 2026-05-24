@@ -5,6 +5,9 @@
   ...
 }:
 
+let
+  vars = import ../../vars.nix;
+in
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -74,12 +77,13 @@
     };
   };
 
-  # sshkey is gitignored; copy hosts/llm/sshkey.example → hosts/llm/sshkey
-  # and paste your authorized public keys before nixos-rebuild switch.
-  # The lib.optional guard lets the flake evaluate cleanly on a fresh
-  # clone where sshkey doesn't exist yet.
-  users.users.root.openssh.authorizedKeys.keyFiles =
-    lib.optional (builtins.pathExists ./sshkey) ./sshkey;
+  # Root authorized keys are pulled by name from vars.nix at the repo root.
+  # Keys are committed (they're public by definition) so the flake evaluator
+  # sees them; no gitignored sidecar file, no operator setup step.
+  users.users.root.openssh.authorizedKeys.keys = [
+    vars.ssh.mbp-m4-max
+    vars.ssh.secondary
+  ];
 
   environment.systemPackages = with pkgs; [
     git
