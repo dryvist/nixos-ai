@@ -8,7 +8,10 @@
   outputs =
     { self, nixpkgs }:
     {
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      formatter = nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ] (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
       nixosConfigurations = {
         llm = nixpkgs.lib.nixosSystem {
