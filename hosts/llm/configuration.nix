@@ -18,14 +18,12 @@ in
     kernelModules = [ "kvm-amd" ];
   };
 
-  # NetworkManager owns DHCP
   networking = {
     hostName = "llm";
     networkmanager.enable = true;
     firewall.enable = true;
   };
 
-  # UTC everywhere — homelab convention
   time.timeZone = "UTC";
 
   nix = {
@@ -43,20 +41,14 @@ in
     };
   };
 
-  # zram swap — modest, for general responsiveness; no on-disk swap
   zramSwap = {
     enable = true;
     memoryPercent = 25;
   };
 
-  # AMD GPU userspace + early KMS via initrd amdgpu module above
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
+  hardware.graphics.enable = true;
 
   services = {
-    # SSH — key-only, root via key
     openssh = {
       enable = true;
       settings = {
@@ -65,8 +57,8 @@ in
         KbdInteractiveAuthentication = false;
       };
     };
-    # SSH brute-force defense — RFC1918 10.0.0.0/8 ignored to cover the
-    # multi-VLAN internal homelab boundary; real access control is key-only.
+    # ignoreIP covers the multi-VLAN internal homelab boundary; real
+    # access control is key-only auth.
     fail2ban = {
       enable = true;
       maxretry = 5;
@@ -77,9 +69,6 @@ in
     };
   };
 
-  # Root authorized keys are pulled by name from vars.nix at the repo root.
-  # Keys are committed (they're public by definition) so the flake evaluator
-  # sees them; no gitignored sidecar file, no operator setup step.
   users.users.root.openssh.authorizedKeys.keys = [
     vars.ssh.mbp-m4-max
     vars.ssh.secondary
