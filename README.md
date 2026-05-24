@@ -1,6 +1,6 @@
 # nixos-ai
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 NixOS system configurations for AI workloads — LLM inference hosts,
 ROCm/CUDA accelerator stacks, model-serving services — declared as flakes.
@@ -113,4 +113,4 @@ pre-commit run --all-files            # run all hooks
 
 ## License
 
-[Apache License 2.0](LICENSE)
+[MIT](LICENSE)
