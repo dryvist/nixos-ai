@@ -15,7 +15,7 @@ configurations for the physical Linux hosts that run AI workloads.
 ## Hosts
 
 | Host | Hardware | Role | Status |
-|------|----------|------|--------|
+| --- | --- | --- | --- |
 | `llm` | B550M Gaming X Wifi6 + Ryzen 9 5900X + 32 GB DDR4 + RX 580 + ADATA 512 GB NVMe | LLM inference / general AI dev | Active (NixOS 26.05) |
 
 ## Installation
