@@ -1,0 +1,6 @@
+result
+.direnv
+.devenv
+__pycache__
+.pytest_cache
+hosts/*/sshkey

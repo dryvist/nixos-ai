@@ -1,0 +1,19 @@
+# Template for hosts/llm/sshkey — the file referenced by
+# users.users.root.openssh.authorizedKeys.keyFiles in configuration.nix.
+#
+# To use:
+#   1. cp hosts/llm/sshkey.example hosts/llm/sshkey
+#   2. Replace this file's contents (including these comments) with your
+#      OpenSSH public keys, one per line, e.g.:
+#
+#        ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... you@your-laptop
+#        ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... you@your-phone
+#
+#   3. sudo nixos-rebuild switch --flake .#llm
+#
+# Notes:
+#   - hosts/*/sshkey is gitignored so your real keys never leak into git.
+#   - sshd reads this file as authorized_keys, where '#' lines are ignored
+#     so leaving comments in the real sshkey is harmless but messy.
+#   - If sshkey is absent, the flake still evaluates (see lib.optional guard
+#     in configuration.nix), but root won't accept any SSH logins.
