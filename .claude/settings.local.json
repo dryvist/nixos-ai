@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/jevans/git/dryvist-dotgithub/feat/add-markdownlint-canonical/**)",
+      "Read(//Users/jevans/git/nixos-ai/feat/initial-import/**)",
+      "Read(//Users/jevans/git/nix-claude-code/chore/align-dryvist-canonical/**)",
+      "Read(//Users/jevans/git/org-dryvist/tofu-proxmox-cluster/chore/align-dryvist-canonical/**)",
+      "Read(//Users/jevans/git/org-dryvist/ansible-proxmox-cluster/chore/align-dryvist-canonical/**)",
+      "Read(//Users/jevans/git/public/ansible-splunk/chore/align-dryvist-canonical/**)",
+      "Read(//Users/jevans/git/public/nix-darwin/chore/align-dryvist-canonical/**)",
+      "Bash(sed -i.bak -E 's/\\\\|[-]+/| ---/g; s/[-]+\\\\|/--- |/g' /Users/jevans/git/public/nix-darwin/chore/align-dryvist-canonical/RUNBOOK.md)"
+    ]
+  }
+}
