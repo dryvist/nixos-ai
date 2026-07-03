@@ -9,7 +9,7 @@ user-level home-manager modules for AI CLI tooling.
 - NixOS host configurations under `hosts/<hostname>/`
 - Shared NixOS modules under `modules/` (none yet — extract when a 2nd host needs them)
 - AI-workload system services (vLLM, llama.cpp, model servers) when added
-- GPU stacks (amdgpu, NVIDIA, ROCm, CUDA) at the system layer
+- GPU stacks (amdgpu/ROCm) at the system layer
 
 ## What does NOT belong here
 
