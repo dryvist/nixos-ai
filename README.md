@@ -14,8 +14,8 @@ configurations for the physical Linux hosts that run AI workloads.
 
 ## Hosts
 
-| Host | Hardware | Role | Status |
-| --- | --- | --- | --- |
+| Host  | Hardware                                                                       | Role                           | Status               |
+| ----- | ------------------------------------------------------------------------------ | ------------------------------ | -------------------- |
 | `llm` | B550M Gaming X Wifi6 + Ryzen 9 5900X + 32 GB DDR4 + RX 580 + ADATA 512 GB NVMe | LLM inference / general AI dev | Active (NixOS 26.05) |
 
 ## Installation
@@ -109,9 +109,9 @@ nixos-rebuild build --flake .#llm     # build (no switch)
 ```
 
 Pre-commit hooks check whitespace, YAML/JSON syntax, large files,
-private-key leaks, markdown lint (markdownlint-cli2), Nix formatting
-(nixfmt-rfc-style), unused bindings (deadnix), common antipatterns
-(statix), and GitHub Actions security (zizmor).
+private-key leaks, secret scanning (gitleaks), markdown lint
+(markdownlint-cli2), Nix formatting (nixfmt), unused bindings (deadnix),
+common antipatterns (statix), and GitHub Actions security (zizmor).
 
 ```bash
 pre-commit install                    # one-time setup
