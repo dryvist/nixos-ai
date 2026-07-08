@@ -3,3 +3,8 @@ result
 .devenv
 __pycache__
 .pytest_cache
+
+# git-hooks.nix regenerates .pre-commit-config.yaml at activation time from
+# the dev-hygiene flakeModule (flake.nix); tracking the YAML causes
+# git-hooks.nix to refuse to install with an "existing config" warning.
+.pre-commit-config.yaml
