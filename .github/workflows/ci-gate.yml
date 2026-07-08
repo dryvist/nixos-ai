@@ -27,6 +27,12 @@ jobs:
     uses: dryvist/.github/.github/workflows/_ci-gate.yml@c0734409c762794d884479818d7a657bd1637be4 # main
     with:
       nix_validate: true
+      # dev-hygiene's treefmt/pre-commit checks build real per-system tool
+      # derivations (statix, etc.) for every declared system, including
+      # aarch64-darwin — which the linux runner can't build ("platform
+      # mismatch"). Matches nix-claude-code's ci.yml, the other dev-hygiene
+      # consumer in this org.
+      all_systems: false
       markdown_lint: true
       file_size: true
       filters: |
