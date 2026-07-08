@@ -60,6 +60,7 @@
 
       perSystem =
         {
+          config,
           system,
           pkgs,
           lib,
@@ -74,10 +75,13 @@
           pre-commit.settings.hooks.gitleaks = {
             enable = true;
             name = "gitleaks";
-            # `detect --no-git` scans the checked-out tree directly rather than
-            # staged git diffs — the pre-commit-check derivation's sandbox has
-            # no `.git` history for `gitleaks git --pre-commit` to read.
-            entry = "${pkgs.gitleaks}/bin/gitleaks detect --no-git --source . --redact -v";
+            # `protect --staged` (git present — a local `pre-commit run`) scans
+            # only the staged diff and implicitly respects .gitignore. The
+            # pre-commit-check derivation's Nix sandbox has no `.git` history,
+            # so it falls back to `detect --no-git`, scanning the checked-out
+            # tree directly — which is fine there since the sandbox only ever
+            # contains git-tracked source, never `.direnv`/`.devenv`/`result`.
+            entry = "bash -c 'if [ -d .git ]; then exec ${pkgs.gitleaks}/bin/gitleaks protect --staged --redact -v; else exec ${pkgs.gitleaks}/bin/gitleaks detect --no-git --source . --redact -v; fi'";
             language = "system";
             pass_filenames = false;
           };
@@ -90,6 +94,22 @@
               inherit pkgs;
               inherit (self) nixosConfigurations;
             };
+          };
+
+          # `nix develop` is what actually generates .pre-commit-config.yaml
+          # and installs the git hook — dev-hygiene only wires the pieces
+          # together, it doesn't create a devShell on its own.
+          devShells.default = pkgs.mkShell {
+            inputsFrom = [ config.treefmt.build.devShell ];
+            shellHook = ''
+              if [ -n "$(git config --get core.hooksPath 2>/dev/null)" ]; then
+                echo "WARN: core.hooksPath is set to '$(git config --get core.hooksPath)'." >&2
+                echo "      pre-commit install will refuse. Unset it:" >&2
+                echo "        git config --unset core.hooksPath           # local" >&2
+                echo "        git config --global --unset core.hooksPath  # global" >&2
+              fi
+              ${config.pre-commit.installationScript}
+            '';
           };
         };
     };
