@@ -24,7 +24,7 @@ jobs:
       contents: read
       pull-requests: read
       actions: write # hub Queue Watchdog cancels stuck queued sibling jobs
-    uses: dryvist/.github/.github/workflows/_ci-gate.yml@090ae3b3e1bb6c34384becd09c1ac34316e0ca06 # main
+    uses: dryvist/.github/.github/workflows/_ci-gate.yml@c2c7eac36b80dfc60e2e7fefe5594e4bb9056c48 # main
     with:
       nix_validate: true
       # dev-hygiene's treefmt/pre-commit checks build real per-system tool
