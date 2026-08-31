@@ -19,6 +19,17 @@
     # lean — treefmt-nix + git-hooks only — so this stays free of the
     # devenv / crate2nix / devshell baggage nix-devenv would drag in, while
     # keeping the config in one org-wide home instead of inlined here.
+    # herdr's NixOS half lives in nix-ai, alongside the home-manager half the
+    # workstation uses, so a pane on a guest runs the same agent CLI build as a
+    # pane on the Mac.
+    #
+    # Deliberately NOT `inputs.nixpkgs.follows`: nix-ai pins its own nixpkgs,
+    # and its llm-agents input pins a third. numtide's binary cache is keyed to
+    # that pin, so overriding it both breaks builds and loses every cache hit.
+    nix-ai = {
+      url = "github:dryvist/nix-ai/main";
+    };
+
     dryvist-github = {
       url = "github:dryvist/.github";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -51,6 +62,7 @@
             specialArgs = { inherit host vars; };
             modules = [
               sops-nix.nixosModules.sops
+              inputs.nix-ai.nixosModules.herdr
               ./modules
               ./hosts/${name}/configuration.nix
             ];
