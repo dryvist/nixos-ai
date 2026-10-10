@@ -1,7 +1,9 @@
 # Pull-mode auto-upgrade. Ported from nix-ai-server (modules/system/auto-upgrade.nix).
 #
 # The host rebuilds against this flake once a week and reboots if the kernel
-# changed. Opt-in and off by default; the reboot window is intentionally
+# changed. The build uses flake.lock exactly as committed: no input is
+# updated, so a new nixpkgs reaches the host only through a merged lock
+# change. Opt-in and off by default; the reboot window is intentionally
 # narrow so an unattended reboot can't surprise a running workload.
 { config, lib, ... }:
 {
@@ -12,9 +14,7 @@
       enable = true;
       flake = "github:dryvist/nixos-ai#${config.networking.hostName}";
       flags = [
-        "--update-input"
-        "nixpkgs"
-        "--no-write-lock-file"
+        "--no-update-lock-file"
         "-L"
       ];
       dates = "Sun 03:00";
