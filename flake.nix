@@ -27,11 +27,11 @@
     # and its llm-agents input pins a third. numtide's binary cache is keyed to
     # that pin, so overriding it both breaks builds and loses every cache hit.
     nix-ai = {
-      url = "github:dryvist/nix-ai/main";
+      url = "github:dryvist/nix-ai?ref=v7";
     };
 
     dryvist-github = {
-      url = "github:dryvist/.github";
+      url = "github:dryvist/.github?ref=v1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
