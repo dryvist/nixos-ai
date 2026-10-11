@@ -8,7 +8,7 @@ ROCm accelerator stacks, model-serving services — declared as flakes.
 ## What this is
 
 The system-level counterpart to
-[`nix-ai`](https://github.com/JacobPEvans/nix-ai) (home-manager modules
+[`nix-ai`](https://github.com/dryvist/nix-ai) (home-manager modules
 for Claude Code / Gemini / Copilot / MCP servers). `nixos-ai` holds NixOS
 configurations for the physical Linux hosts that run AI workloads.
 
@@ -30,7 +30,7 @@ Prerequisites:
 Clone the repo onto the target host (typical path is `/etc/nixos`):
 
 ```bash
-sudo git clone https://github.com/JacobPEvans/nixos-ai.git /etc/nixos
+sudo git clone https://github.com/dryvist/nixos-ai.git /etc/nixos
 cd /etc/nixos
 ```
 
@@ -72,7 +72,7 @@ Build directly from GitHub without cloning (useful for one-shot testing
 on a fresh host):
 
 ```bash
-sudo nixos-rebuild switch --flake github:JacobPEvans/nixos-ai#llm
+sudo nixos-rebuild switch --flake github:dryvist/nixos-ai#llm
 ```
 
 Verify after switch:
@@ -120,13 +120,13 @@ pre-commit run --all-files            # run all hooks
 
 ## Related repos
 
-- [`nix-ai`](https://github.com/JacobPEvans/nix-ai) — user-level AI tooling
+- [`nix-ai`](https://github.com/dryvist/nix-ai) — user-level AI tooling
   (Claude Code, Gemini, Copilot, MCP servers) as home-manager modules.
-- [`nix-darwin`](https://github.com/JacobPEvans/nix-darwin) — macOS system
+- [`nix-darwin`](https://github.com/dryvist/nix-darwin) — macOS system
   configurations.
-- [`nix-home`](https://github.com/JacobPEvans/nix-home) — cross-platform
+- [`nix-home`](https://github.com/dryvist/nix-home) — cross-platform
   home-manager user environment.
-- [`nix-devenv`](https://github.com/JacobPEvans/nix-devenv) — reusable
+- [`nix-devenv`](https://github.com/dryvist/nix-devenv) — reusable
   per-language dev shells.
 
 ## License
