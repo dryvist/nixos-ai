@@ -1,7 +1,7 @@
 # nixos-ai
 
 System-level NixOS for AI hosts in the homelab — the counterpart to
-[`JacobPEvans/nix-ai`](https://github.com/JacobPEvans/nix-ai), which is
+[`dryvist/nix-ai`](https://github.com/dryvist/nix-ai), which is
 user-level home-manager modules for AI CLI tooling.
 
 ## What belongs here
@@ -19,9 +19,9 @@ user-level home-manager modules for AI CLI tooling.
 ## What does NOT belong here
 
 - Home-manager / user-level config →
-  [`JacobPEvans/nix-ai`](https://github.com/JacobPEvans/nix-ai)
+  [`dryvist/nix-ai`](https://github.com/dryvist/nix-ai)
 - macOS configs →
-  [`JacobPEvans/nix-darwin`](https://github.com/JacobPEvans/nix-darwin)
+  [`dryvist/nix-darwin`](https://github.com/dryvist/nix-darwin)
 - True secrets (private keys, API tokens, TLS certs) — those belong in
   agenix / sops-nix, never in `vars.nix` or any plain committed file
 
