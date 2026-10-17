@@ -43,14 +43,14 @@ Standard `~/git/` convention: bare repo at `~/git/nixos-ai/.git`, worktrees
 at `~/git/nixos-ai/<type>/<name>/`. Run `/refresh-repo` before starting
 new work.
 
-## Tooling baseline (inherited from dryvist/.github)
+## Tooling baseline (inherited from JacobPEvans/.github)
 
-Formatting, linting, and pre-commit hooks come from `dryvist/.github`'s
+Formatting, linting, and pre-commit hooks come from `JacobPEvans/.github`'s
 `flakeModules.dev-hygiene`, imported directly in `flake.nix` — not a synced
 copy. See `nix/dev-hygiene.nix` in that repo for the canonical source.
 
 - **Markdown lint:** `markdownlint-cli2` with the canonical `.markdownlint-cli2.yaml`
-  synced from [`dryvist/.github`](https://github.com/dryvist/.github) (`MD013` line
+  synced from [`JacobPEvans/.github`](https://github.com/JacobPEvans/.github) (`MD013` line
   length 160, no 80-char heading/code restrictions, `MD024 siblings_only` scoped to
   `CHANGELOG.md` only).
 - **Nix toolchain:** `nixfmt` (formatter), `statix` (lint), `deadnix`
